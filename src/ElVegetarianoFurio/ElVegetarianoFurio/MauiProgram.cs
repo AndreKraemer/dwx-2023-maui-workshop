@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using ElVegetarianoFurio.Profile;
+using Microsoft.Extensions.Logging;
+using CommunityToolkit.Maui;
+
 
 namespace ElVegetarianoFurio;
 
@@ -9,7 +12,8 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
-			.ConfigureFonts(fonts =>
+            .UseMauiCommunityToolkit()
+            .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
@@ -18,7 +22,8 @@ public static class MauiProgram
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif
-
+		builder.Services.AddSingleton<IProfileService, ProfileService>();
+		builder.Services.AddTransient<ProfilePage, ProfileViewModel>();
 		return builder.Build();
 	}
 }

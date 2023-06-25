@@ -24,20 +24,55 @@ namespace ElVegetarianoFurio.Profile
 
         [ObservableProperty]
         private bool _isBusy = false;
+       
+        private readonly IProfileService _profileService;
+
+        public ProfileViewModel(IProfileService profileService)
+        {
+            _profileService = profileService;
+        }
 
         public async Task Initialize()
         {
             IsBusy = true;
-            await Task.Delay(3000); // Simulieren eines Ladevorgangs
-            IsBusy = false;
+            try
+            {
+
+                var profile = await _profileService.GetAsync();
+
+                FullName = profile.FullName;
+                Street = profile.Street;
+                Zip = profile.Zip;
+                City = profile.City;
+                Phone = profile.Phone;
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         [RelayCommand(CanExecute = nameof(CanSave))]
         private async Task Save()
         {
             IsBusy = true;
-            await Task.Delay(3000); // Simulieren eines Speichervorgangs
-            IsBusy = false;
+
+            try
+            {
+                var profile = new Profile
+                {
+                    FullName = FullName,
+                    Street = Street,
+                    Zip = Zip,
+                    City = City,
+                    Phone = Phone
+                };
+                await _profileService.SaveAsync(profile);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         private bool CanSave()
