@@ -3,18 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:menu="clr-namespace:ElVegetarianoFurio.Menu"
              xmlns:local="clr-namespace:ElVegetarianoFurio"
+             xmlns:core="clr-namespace:ElVegetarianoFurio.Core"
              x:DataType="local:MainViewModel"     
              x:Class="ElVegetarianoFurio.MainPage">
 
-    <Grid RowDefinitions="Auto, Auto, *">
-        <Label Text="El Vegetariano Furio" FontSize="Title" HorizontalTextAlignment="Center"/>
-        <Label Text="Unsere Speisen" Grid.Row="1" FontSize="Medium" FontAttributes="Bold" Padding="5" />
-        <CollectionView Grid.Row="2" ItemsSource="{Binding Categories}">
+    <Grid RowDefinitions="Auto, Auto, Auto, *">
+        <Label Text="{x:Static core:FaSolid.Utensils}" FontFamily="Fa-Solid" 
+            FontSize="99" HorizontalTextAlignment="Center" Padding="10"/>
+        <Label Text="El Vegetariano Furio" Grid.Row="1" FontFamily="Sofia" FontSize="Title" HorizontalTextAlignment="Center"/>
+        <Label Text="Unsere Speisen" Grid.Row="2" FontFamily="Shadows" FontSize="Medium" FontAttributes="Bold" Padding="5" />
+        <CollectionView Grid.Row="3" ItemsSource="{Binding Categories}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="menu:Category">
                     <Border Margin="5" StrokeShape="RoundRectangle 15" StrokeThickness="0">
                         <Grid HeightRequest="200">
-                            <Rectangle HeightRequest="200" HorizontalOptions="Fill" Fill="Red"/>
+                            <Image Source="{Binding Id, StringFormat='category{0}.jpg'}" HeightRequest="200" Aspect="AspectFill"/>
                             <VerticalStackLayout Padding="5" VerticalOptions="End" BackgroundColor="Black" Opacity="0.7">
                                 <Label Text="{Binding Name}" FontAttributes="Bold" TextColor="White"/>
                                 <Label Text="{Binding Description}" FontAttributes="Italic" TextColor="White"/>
